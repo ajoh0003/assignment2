@@ -9,3 +9,10 @@
 .vis-container {
     width: 100%;
 }
+.content{
+    width: 1200px;
+    margin: auto;
+    padding: 50px;
+    padding-top: 25px;
+    background-color:white;
+  }
