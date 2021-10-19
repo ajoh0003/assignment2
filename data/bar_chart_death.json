@@ -1,0 +1,47 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "description": "A bar chart that sorts the y-values by the x-values.",
+    "data": {"url": "data/top 10 earthquakes.csv"},
+    "width": "container",
+    "transform": [{"filter": "datum.Deaths > 10 "}],
+
+    "encoding": {
+      "y": {
+        "field": "Year",
+        "type": "ordinal",
+        "sort": "-x",
+        "title": null
+      },
+      "x": {
+        "aggregate": "sum",
+        "field": "Deaths",
+        "title": "Deaths",
+        "scale":{
+            "domain":[1,1200], "type": "linear"
+        },"axis":{"grid": false}
+      },
+      "tooltip": [
+        {"field": "Location Name", "type": "nominal", "title": "Location"},
+        {"field": "Year2", "type": "ordinal", "title": "Year"},
+        {"field": "Mag", "type": "quantitative", "title": "Magnitude"},
+        {"field": "Deaths", "type": "quantitative", "title": "Deaths"}
+    ]
+    },
+    "layer": [
+        {
+        "mark": "bar"
+      }, 
+      {
+        "mark": {
+          "type": "text",
+          "align": "left",
+          "baseline": "middle", 
+          "xOffset":5,
+          "dx":1
+        },
+        "encoding": {
+          "text": {"field": "Deaths", "type": "quantitative"}
+        }
+      } 
+    ]
+  }

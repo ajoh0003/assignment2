@@ -1,0 +1,77 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 1000,
+    "height": 300,
+    "data": {
+      "url": "data/1900 usa mag.csv"
+    },
+    "layer": [
+      {
+        "mark": {
+          "type": "point",
+          "color":"steelblue",
+          "size": 100,
+          "stroke": "black",
+          "strokeWidth": 1,
+          "fillOpacity": 1,
+          "filled": true
+        },
+        "encoding": {
+          "x": {
+            "field": "Year",
+            "type": "temporal","axis":{"grid": false, "title": ""}
+          },
+          "y": {
+            "field": "Mag",
+            "title": "Magnitude",
+            "type": "quantitative","axis":{"grid": false}
+          },
+          "tooltip": [
+            {"field": "Location Name", "type": "nominal", "title": "Location"},
+            {"field": "Year", "type": "temporal", "title": "Year", "timeUnit": "year"},
+            {"field": "Mag", "type": "quantitative", "title": "Magnitude"}]
+        }
+      },
+      {
+        "mark": {
+          "type": "line",
+          "color": "firebrick"
+        },
+        "transform": [
+          {
+            "regression": "Mag",
+            "on": "Year"
+          }
+        ],
+        "encoding": {
+          "x": {
+            "field": "Year",
+            "type": "quantitative", "axis":null
+          },
+          "y": {
+            "field": "Mag",
+            "type": "quantitative"
+          }
+        }
+      },
+      {
+        "transform": [
+          {
+            "regression": "Mag",
+            "method": "poly",
+            "on": "Year",
+            "params": true
+          },
+          {"calculate": "'R²: '+format(datum.rSquared, '.2f')", "as": "R2"}
+        ],
+        "mark": {
+          "type": "text",
+          "color": "firebrick",
+          "x": "width",
+          "align": "right",
+          "y": -5
+        }
+      }
+    ]
+  }
+  

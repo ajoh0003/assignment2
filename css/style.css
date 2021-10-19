@@ -1,6 +1,11 @@
 .vis {
-    width: 900px;
+    width: 1100px;
     background-color: white;
-    padding: 70px;
+    margin: 30px;
+    padding: 20px;
     padding-top: 35px;
+}
+
+.vis-container {
+    width: 100%;
 }

@@ -1,0 +1,100 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "data": {
+        "url": "data/1900 usa mag.csv"
+    },
+    "params": [
+        {
+          "name": "Magnitude_Above",
+          "value": 2,
+          "bind": {
+            "input": "range",
+            "min": 2,
+            "max": 9.2,
+            "step": 0.1,
+            "name": "Minimum Magnitude: "
+          }
+    }],
+    "vconcat": [{
+            "hconcat": [{
+                    "width": 1000,
+                    "height": 650,
+                    "projection": { "type": "albersUsa"},
+                    "layer": [{
+                            "data": {
+                                "url": "data/ne_50m_admin_1_states_provinces_lakes.json",
+                                "format": {
+                                    "type": "topojson",
+                                    "feature": "ne_50m_admin_1_states_provinces_lakes"
+                                }
+                            },
+                            "mark": { "type": "geoshape", "fill": "lightgray", "stroke": "white" }
+                        },
+                        {
+                            "transform": [{ "filter": { "param": "dragFilter" } },             
+                                {"filter": "datum.Mag >= Magnitude_Above"}
+                            ],
+                            
+                            "encoding": {
+                                "longitude": { "field": "Longitude", "type": "quantitative" },
+                                "latitude": { "field": "Latitude", "type": "quantitative" },
+        
+                                "color":{
+                                    "value": "steelblue"                
+                                  },
+                                  "size": {
+                                    "field": "Mag",
+                                    "title": "Magnitude",
+                                    "type": "quantitative",
+                                    "scale": {
+                                      "type": "threshold",
+                                      "domain": [3, 5, 7, 9],
+                                      "range": [65, 175, 300, 550, 900]
+                                    }
+                                },
+                                "tooltip": [
+                                    { "field": "Location Name", "type": "nominal" , "title": "Location" },
+                                    { "field": "Year", "type": "temporal" , "timeUnit": "year", "title": "Year" },
+                                    { "field": "Mag", "type": "quantitative", "title": "Magnitude" },
+                                    { "field": "Deaths", "type": "quantitative", "title": "Deaths" },
+                                    { "field": "Damage ($Mil)", "type": "quantitative", "title": "Damage (Millions of US$)" }
+                                ]
+                            },
+                            "layer": [{
+                                    "mark": {
+                                        "type": "circle",
+                                        "stroke": "black",
+                                        "strokeWidth": 1,
+                                        "fillOpacity": 1
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "width": 1000,
+            "height": 70,
+            "mark": { "type": "line", "color":"steelblue" },
+            "title": "The line chart and the slider below can be used to filter the map",
+            "params": [{
+                "name": "dragFilter",
+                "select": { "type": "interval", "encodings": ["x"] }
+            }],
+            "encoding": {
+                "x": {
+                    "field": "Year",
+                    "timeUnit": "year",
+                    "axis": { "title": "", "format": "%Y" }
+                },
+                "y": {
+                    "aggregate": "count",
+                    "axis": { "tickCount": 3, "grid": false },
+                    "title": "# of Eqarthquakes"
+                }
+            }
+        }
+    ]
+}
